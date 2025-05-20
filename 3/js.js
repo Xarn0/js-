@@ -61,6 +61,7 @@ from3.addEventListener("input", function (e) {
 
 		blockDisplay.textContent = "";
 		blockDisplay.classList.remove("error");
+		console.log(!value.trim());
 		if (!value.trim()) {
 			blockDisplay.textContent = "";
 			blockDisplay.classList.remove("error", "success");
