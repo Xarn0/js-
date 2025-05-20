@@ -1,0 +1,22 @@
+.draggable {
+	width: 150px;
+	height: 50px;
+	background: royalblue;
+	color: white;
+	text-align: center;
+	line-height: 50px;
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	cursor: grab;
+	user-select: none;
+}
+.draggable--dark {
+	background-color: #000;
+}
+.draggable--blue {
+	background-color: #146aa3;
+}
+.draggable--red {
+	background-color: #a33114;
+}
