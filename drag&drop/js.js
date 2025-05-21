@@ -8,8 +8,6 @@ el.forEach((item) => {
 	item.addEventListener("mousedown", (e) => {
 		isDragging = true;
 		offsetX = e.clientX - item.offsetLeft;
-		console.log("clientx " + e.clientX);
-		console.log("offsetLeft " + item.offsetLeft);
 
 		offsetY = e.clientY - item.offsetTop;
 		item.style.cursor = "grabbing";
