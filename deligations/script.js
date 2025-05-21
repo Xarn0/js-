@@ -44,4 +44,19 @@ list.addEventListener("click", function (e) {
 
 		e.currentTarget.append(copy);
 	}
+
+	if (e.target.classList.contains("move-up")) {
+		let prev = item.previousElementSibling;
+
+		if (prev) {
+			item.parentNode.insertBefore(item, prev);
+		}
+	}
+	if (e.target.classList.contains("move-down")) {
+		let next = item.nextElementSibling;
+
+		if (next) {
+			item.parentNode.insertBefore(next, item);
+		}
+	}
 });
