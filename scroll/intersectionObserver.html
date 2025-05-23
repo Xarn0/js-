@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div class="block-display"></div>
+		<div class="block" style="margin-top: 1000px">we</div>
+
+		<script>
+			con;
+			const observer = new IntersectionObserver((entries, obs) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						console.log(entry.target);
+						console.log(entry.boundingClientRect);
+
+						obs.unobserve(entry.target);
+					}
+				});
+			});
+			observer.observe(document.querySelector(".block"));
+		</script>
+	</body>
+</html>

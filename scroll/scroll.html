@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Scroll Метрики</title>
+		<style>
+			.scroll-box {
+				position: relative;
+				width: 400px;
+				height: 300px;
+				overflow-y: auto;
+				border: 2px solid #999;
+				margin: 40px auto;
+				/* padding: 1rem; */
+			}
+
+			.item {
+				height: 100px;
+				margin: 0 10px;
+				margin-bottom: 10px;
+				background: #eee;
+				padding: 1rem;
+				font-size: 18px;
+			}
+
+			.notice {
+				text-align: center;
+				font-weight: bold;
+				margin-top: 20px;
+				color: green;
+			}
+
+			button {
+				display: none;
+				padding: 20px;
+				border: none;
+				background-color: #049;
+				color: #fff;
+				font-size: 20px;
+				border-radius: 10px;
+				margin: 10px auto;
+				cursor: pointer;
+			}
+			.btns {
+				display: flex;
+				width: 200px;
+				margin: 0 auto;
+			}
+			.progress-bar {
+				width: 0%;
+				position: sticky;
+				height: 4px;
+				top: 0px;
+				padding: 0;
+				left: 0;
+				background-color: greenyellow;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="scroll-box" id="box">
+			<div class="progress-bar"></div>
+			<div class="item">Блок 1</div>
+			<div class="item">Блок 2</div>
+			<div class="item">Блок 3</div>
+			<div class="item">Блок 4</div>
+			<div class="item">Блок 5</div>
+
+			<div class="item">Блок 6</div>
+		</div>
+
+		<div class="notice" id="notice"></div>
+		<div class="btns">
+			<button id="start">50%</button>
+			<button id="end">end</button>
+		</div>
+
+		<script>
+			let scrollBox = document.querySelector(".scroll-box");
+			let notice = document.querySelector(".notice");
+			let progressBar = document.querySelector(".progress-bar");
+
+			scrollBox.addEventListener("scroll", () => {
+				let scrollTopEl = scrollBox.scrollTop + scrollBox.clientHeight;
+				notice.textContent = "";
+				if (scrollTopEl >= scrollBox.scrollHeight) {
+					notice.textContent = "Конец";
+					start.style.display = "block";
+					end.style.display = "none";
+				} else {
+					start.style.display = "none";
+					end.style.display = "block";
+				}
+
+				let progressResult = Math.round(
+					(scrollBox.scrollTop /
+						(scrollBox.scrollHeight - scrollBox.clientHeight)) *
+						100
+				);
+				progressBar.textContent = progressResult + "%";
+				progressBar.style.width = progressResult + "%";
+			});
+
+			let start = document.querySelector("#start");
+			let end = document.querySelector("#end");
+
+			start.addEventListener("click", () => {
+				// document
+				// 	.querySelector(".item:nth-child(2)")
+				// 	.scrollIntoView({ behavior: "smooth" });
+				let procc = Math.round(
+					(scrollBox.scrollHeight - scrollBox.clientHeight) / 2
+				); // здесь эксперемент был прокрутить на 50%
+				scrollBox.scrollTo({ top: procc, behavior: "smooth" });
+			});
+			end.addEventListener("click", () => {
+				// document
+				// 	.querySelector(".item:last-child")
+				// 	.scrollIntoView({ behavior: "smooth" });
+				scrollBox.scrollBy({
+					top: 50,
+					behavior: "smooth"
+				});
+			});
+		</script>
+	</body>
+</html>
