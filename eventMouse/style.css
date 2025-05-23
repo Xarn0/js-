@@ -1,0 +1,14 @@
+.block {
+	width: 200px;
+	height: 200px;
+	background-color: #033203;
+	border: 10px solid #940;
+	margin: auto;
+	padding: 20px;
+	margin-top: 90px;
+}
+.block1 {
+	height: 90px;
+	width: 100%;
+	margin-top: 100px;
+}
