@@ -1,0 +1,27 @@
+.tooltip {
+	position: absolute;
+	padding: 6px 10px;
+	background: #333;
+	color: #fff;
+	border-radius: 4px;
+	font-size: 14px;
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.tooltip.active {
+	opacity: 1;
+	pointer-events: auto;
+}
+.btnTooltip {
+	margin: 100px auto;
+	display: block;
+	transform: translateY(50%);
+	width: 200px;
+	-webkit-transform: translateY(50%);
+	-moz-transform: translateY(50%);
+	-ms-transform: translateY(50%);
+	-o-transform: translateY(50%);
+}

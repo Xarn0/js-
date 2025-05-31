@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader {
+            animation: rotate 2s linear infinite;
+        }
+
+        .cursor {
+            animation: blink 1s 3 both;
+        }
+
+        .scroll-container {
+            display: flex;
+            margin-bottom: 3000px;
+        }
+
+        /* .scroll:nth-child(even) {
+				--x: -250px;
+			}
+			.scroll:nth-child(odd) {
+				--x: 250px;
+			} */
+        .scroll {
+            /* --y: -250px; */
+            margin-top: 300px;
+            border: 5px solid #0c2461;
+            width: 170px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #60a3bc;
+            color: #ffe;
+            font-size: 40px;
+            opacity: 0;
+
+            transform: translate(var(--x), var(--y));
+            transition: 1s transform ease-in-out, 0.3s opacity ease-in-out;
+        }
+
+        .scroll.active {
+            opacity: 1;
+            transform: translate(0px, 0px);
+            /* animation: identifier 2s alternate-reverse 3; */
+        }
+
+        .scroll.active2 {
+            opacity: 1;
+            transition: 1s transform ease-in-out, 0.3s opacity ease-in-out;
+            transform: translate(50px, 50px);
+        }
+
+        .scroll:nth-child(1).active {
+            color: #fa983a;
+            background-color: #1e3799;
+        }
+
+        .scroll:nth-child(2).active {
+            color: #78e08f;
+            background-color: #0a3d62;
+        }
+
+        .scroll:nth-child(3).active {
+            color: #e55039;
+            background-color: #b71540;
+        }
+
+        .scroll:nth-child(4).active {
+            color: #7d5fff;
+            background-color: #7158e2;
+        }
+
+        .scroll:nth-child(5).active {
+            color: #ff4d4d;
+            background-color: #ff3838;
+        }
+
+        .scroll:nth-child(6).active {
+            color: #7efff5;
+            background-color: #67e6dc;
+        }
+
+        .scroll:nth-child(7).active {
+            color: #cd84f1;
+            background-color: #c56cf0;
+        }
+
+        .scroll:nth-child(8).active {
+            color: #1dd1a1;
+            background-color: #10ac84;
+        }
+
+        .scroll:nth-child(9).active {
+            color: #ff6b6b;
+            background-color: #ee5253;
+        }
+
+        @keyframes identifier {
+            0% {
+                transform: scale(0.25) translate(0);
+            }
+
+            50% {
+                transform: scale(0.5) translate(0);
+            }
+
+            75% {
+                transform: scale(0.75) translate(0);
+            }
+
+            100% {
+                transform: scale(1) translate(0);
+            }
+        }
+
+        .load {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: rotate 2s infinite;
+            position: relative;
+
+        }
+
+        .load::after {
+            animation: identifier 2s infinite;
+            bottom: 0;
+            left: 0;
+        }
+
+        .load::before {
+            bottom: 10px;
+            left: 0;
+            animation: identifier 4s infinite;
+        }
+
+        .load::after,
+        .load::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            position: absolute;
+
+            border-radius: 50%;
+            background: #000;
+        }
+
+        .test {
+            border: 5px solid #0c2461;
+            width: 170px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #60a3bc;
+            color: #ffe;
+            font-size: 40px;
+        }
+    </style>
+    <div class="scroll-container">
+        <div class="scroll">1</div>
+        <div class="scroll ">2</div>
+        <div class="scroll">3</div>
+        <div class="scroll ">4</div>
+        <div class="scroll">5</div>
+        <div class="scroll ">6</div>
+        <div class="scroll">7</div>
+        <div class="scroll">8</div>
+        <div class="scroll ">9</div>
+    </div>
+    <div class="scroll-container">
+        <div class="test cursor">1</div>
+        <div class="test ">2</div>
+        <div class="test">3</div>
+        <div class="test ">4</div>
+        <div class="test">5</div>
+        <div class="test ">6</div>
+        <div class="test">7</div>
+        <div class="test">8</div>
+        <div class="test ">9</div>
+    </div>
+    <div class="load"></div>
+    <dib style="margin-top: 400px">2</dib>
+    <script>
+        const list = document.querySelectorAll(".scroll");
+
+        // Сразу задаём смещение — до IntersectionObserver
+        list.forEach((item, index) => {
+            const x = index % 2 === 0 ? "250px" : "-250px";
+            const y = "-250px";
+            item.style.setProperty("--x", x);
+            item.style.setProperty("--y", y);
+        });
+
+        let observe = new IntersectionObserver(
+            (entries, obs) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const item = entry.target;
+                        const index = [...list].indexOf(item);
+
+                        // item.style.transitionDelay = `${index * 200}ms`;
+                        item.classList.add("active");
+
+                        // obs.unobserve(item);
+                    }
+                    if (!entry.isIntersecting) {
+                        entry.target.classList.remove("active");
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        list.forEach((listItem) => {
+            observe.observe(listItem);
+        });
+
+        let test = document.querySelectorAll('.test');
+
+        test.forEach(item => {
+            item.addEventListener('animationend', (e) => {
+                let nextElement = e.target.nextElementSibling;
+                if (nextElement) {
+                    nextElement.style.animation = `blink 1s 2`;
+                } else {
+                    console.log('конец');
+
+                }
+            })
+        })
+
+
+
+    </script>
+</body>
+
+</html>

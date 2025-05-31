@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="inner">
+            <div class="inner__header">заголовок</div>
+            <div class="inner__main">контекст</div>
+            <div class="inner__footer">подвал</div>
+        </div>
+    </div>
+    <div class="display"></div>
+    <button id="start">start</button>
+
+</body>
+<script>
+    const start = document.getElementById('start');
+    const wrap = document.querySelector('.wrap');
+    const header = document.querySelector('.inner__header');
+
+
+
+    function openMo() {
+
+        header.dispatchEvent(new CustomEvent('box-ready', {
+            bubbles: true,
+            detail: {
+                name: 'header',
+                color: '#924'
+
+            },
+
+        }))
+
+
+    }
+
+    start.addEventListener('click', openMo)
+    wrap.addEventListener('box-ready', function (e) {
+        this.style.backgroundColor = '#849321'
+        e.target.style.color = e.detail.color;
+        document.querySelector('.display').textContent = e.detail.name;
+        e.stopImmediatePropagation()
+        start.removeEventListener('click', openMo)
+    })
+    document.querySelector('html').addEventListener('box-ready', function (e) {
+        this.style.backgroundColor = '#777'
+    })
+    wrap.addEventListener('box-ready', function (e) {
+        this.style.backgroundColor = '#895221'
+        e.target.style.color = e.detail.color;
+        document.querySelector('.display').textContent = 'two';
+
+    })
+
+
+
+</script>
+
+</html>

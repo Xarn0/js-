@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<style>
+			.form-feedback {
+				width: 200px;
+				padding: 20px;
+				border: 1px solid rgba(68, 51, 153, 0.486);
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+				background-color: #cccccc4f;
+				margin: 0 auto;
+				border-radius: 10px;
+			}
+			input[name] {
+				border: none;
+				height: 30px;
+				border-radius: 20px;
+			}
+			input[type="submit"] {
+				border: none;
+				/* height: 30px; */
+				font-size: 20px;
+				padding: 5px;
+				box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+			}
+			.error {
+				color: red;
+				font-size: 12px;
+				text-align: center;
+			}
+			.success {
+				color: green;
+				font-size: 12px;
+				/* text-align: center; */
+			}
+			.success-feedback {
+				width: 250px;
+				text-align: center;
+				height: 80px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: rgb(44, 102, 39);
+				position: absolute;
+				right: 10px;
+				background-color: #84e084;
+				padding: 20px;
+				transform: translateY(-100px);
+				transition: 1s transform ease-in-out, opacity 1s ease-in;
+				opacity: 0;
+			}
+			.success-feedback.active {
+				transform: translateY(0);
+				visibility: visible;
+				opacity: 1;
+				transition: 1s transform ease-in-out, opacity 1s ease-in;
+			}
+		</style>
+		<div class="success-feedback">успешно отправлено</div>
+		<form action="" class="form-feedback">
+			<input type="text" name="name" placeholder="name" />
+			<div class="name-error"></div>
+			<input type="email" name="email" placeholder="email" />
+			<div class="email-error"></div>
+			<input type="text" name="message" placeholder="message" />
+			<div class="message-error"></div>
+			<input type="submit" id="submit" value="Отправить" disabled />
+		</form>
+		<script>
+			let form = document.querySelector(".form-feedback");
+			let submitBtn = form.querySelector("#submit");
+			let displayRequest = document.querySelector(".success-feedback");
+
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+
+				submitBtn.disabled = true;
+				submitBtn.value = "Отправляем....";
+				setTimeout(() => {
+					displayRequest.classList.add("active");
+					form.reset();
+					submitBtn.value = "Отправить";
+
+					let errors = document.querySelectorAll(".success");
+					errors.forEach((item) => {
+						item.textContent = "";
+						item.classList.remove("success");
+					});
+					setTimeout(() => {
+						displayRequest.classList.remove("active");
+					}, 3000);
+				}, 3000);
+			});
+
+			form.addEventListener("input", (e) => {
+				const elements = form.querySelectorAll("input[name]");
+				let hasError = false;
+				elements.forEach((item) => {
+					const errorEl = form.querySelector(`.${item.name}-error`);
+					errorEl.textContent = "";
+					errorEl.classList.remove("error", "success");
+					item.classList.remove("error");
+
+					if (!item) return;
+
+					if (!item.value.trim()) {
+						errorEl.classList.remove("error", "success");
+						hasError = true;
+
+						return;
+					}
+
+					if (item.name == "name") {
+						if (item.value.length < 5) {
+							item.classList.add("error");
+							errorEl.textContent = "поле должно быть больше 5 символов";
+							errorEl.classList.add("error");
+							hasError = true;
+						} else {
+							errorEl.classList.add("success");
+							errorEl.textContent = "good";
+							return;
+						}
+					}
+					if (item.name == "email") {
+						let patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+						if (!patternEmail.test(item.value)) {
+							item.classList.add("error");
+							errorEl.classList.add("error");
+							errorEl.textContent = "Введите корректную почтовый ящик";
+							hasError = true;
+							return;
+						} else {
+							errorEl.classList.add("success");
+							errorEl.textContent = "good";
+							return;
+						}
+					}
+					if (item.name == "message") {
+						if (item.value.length < 15) {
+							errorEl.classList.add("error");
+							item.classList.add("error");
+							errorEl.textContent = "  Поле должно быть больше 15 символов";
+							hasError = true;
+							return;
+						} else {
+							errorEl.classList.add("success");
+							errorEl.textContent = "good";
+							return;
+						}
+					}
+				});
+				submitBtn.disabled = hasError;
+			});
+		</script>
+	</body>
+</html>

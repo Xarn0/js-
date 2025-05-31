@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="progress-bar">
+        <div class="fill"></div>
+    </div>
+
+    <style>
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            border: 2px solid #00bcd4;
+            margin-top: 50px;
+        }
+
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: #00bcd4;
+            transition: width 0s;
+        }
+    </style>
+    <script>
+        const bar = document.querySelector('.fill');
+        let start = null;
+        let aminateId = null;
+
+
+        requestAnimationFrame(animate)
+
+        function animate(timestap) {
+            if (!start) start = timestap;
+            let delta = timestap - start;
+
+            const percent = Math.min((delta / 5000) * 100, 100);
+
+            bar.style.width = `${percent}%`;
+            if (percent < 100) {
+                aminateId = requestAnimationFrame(animate);
+            } else {
+                if (aminateId) {
+                    cancelAnimationFrame(aminateId)
+                    aminateId = null;
+                }
+
+            }
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

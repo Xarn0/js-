@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Асинхронный рендеринг через setTimeout</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        #progress {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #007acc;
+        }
+
+        #container {
+            height: 300px;
+            overflow: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .item {
+            padding: 5px;
+            margin-bottom: 3px;
+            background: #e0f7fa;
+            border: 1px solid #00acc1;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Рендеринг карточек по частям (setTimeout)</h2>
+    <button onclick="startRendering()">Начать</button>
+    <div id="progress"></div>
+    <div id="container"></div>
+
+    <script>
+        const total = 10000;
+        const batchSize = 100; // сколько элементов за 1 итерацию
+        let current = 0;
+        const container = document.getElementById('container');
+        const progress = document.getElementById('progress');
+
+        function renderBatch() {
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < batchSize && current < total; i++, current++) {
+                const div = document.createElement('div');
+                div.textContent = `Карточка №${current}`;
+                div.className = 'item';
+                fragment.appendChild(div);
+            }
+
+            container.appendChild(fragment);
+            progress.textContent = `Прогресс: ${current} / ${total}`;
+
+            if (current < total) {
+                setTimeout(renderBatch, 0); // продолжаем без блокировки интерфейса
+            } else {
+                progress.textContent += ' ✅ Готово!';
+            }
+        }
+
+        function startRendering() {
+            container.innerHTML = '';
+            progress.textContent = '';
+            current = 0;
+            renderBatch();
+        }
+    </script>
+</body>
+
+</html>

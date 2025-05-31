@@ -1,0 +1,18 @@
+.dropdown {
+}
+.dropdown__title {
+	cursor: pointer;
+}
+.dropdown__list {
+	display: none;
+
+	transition: 1s opacity ease-in-out;
+	-webkit-transition: 1s opacity ease-in-out;
+	-moz-transition: 1s opacity ease-in-out;
+	-ms-transition: 1s opacity ease-in-out;
+	-o-transition: 1s opacity ease-in-out;
+}
+
+.dropdown__list.active {
+	display: block;
+}

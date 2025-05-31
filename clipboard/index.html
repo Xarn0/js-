@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .text,
+        .display {
+            width: 400px;
+            height: 400px;
+            border: 1px solid #000
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+    </style>
+    <div class="container">
+        <div class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere natus neque debitis, optio
+            fugit
+            animi cumque
+            hic incidunt inventore eos soluta!</div>
+        <div class="display"></div>
+    </div>
+    <button id="copyBtn">Copy</button>
+
+    <button class="paste">Вставить</button>
+
+    <div id="box"></div>
+    <p id="text" contenteditable="false">Этот текст можно редактировать.</p>
+</body>
+<script>
+    const btn = document.querySelector('#copyBtn');
+    const text = document.querySelector('.text')
+
+    btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(text.textContent)
+        console.log('Скопированн текст');
+
+    })
+
+
+    const btnPaste = document.querySelector('.paste');
+    let display = document.querySelector('.display')
+
+    btnPaste.addEventListener('click', () => {
+        let copy = navigator.clipboard.readText();
+        copy.then(text => {
+            display.textContent = text;
+            console.log('Вставлен');
+
+        })
+
+    })
+
+
+
+    const box = document.getElementById("box");
+    box.insertAdjacentHTML("afterend", "<p>Вставка внутрь!</p>");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>

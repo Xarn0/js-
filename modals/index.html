@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .modal {
+            opacity: 0;
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+
+            transition: 2s opacity ease-in-out;
+        }
+
+        .modal__overlay {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal__content {
+            width: 300px;
+            position: relative;
+            margin: auto;
+            transform: translateY(50%);
+            height: 400px;
+            background-color: #fff;
+            padding: 20px;
+            overflow: hidden;
+        }
+    </style>
+    <div class="box"></div>
+
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+            background: red;
+            position: absolute;
+            left: 0;
+            top: 100px;
+        }
+    </style>
+    <button class="open">Open</button>
+
+    <div class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <button class="close" tabindex="0">close</button>
+            <h2>Заголовок</h2>
+
+        </div>
+    </div>
+    <p style="margin-top: 3000px;">lore</p>
+    <script>
+        const open = document.querySelector('.open');
+        const modal = document.querySelector('.modal')
+        const modaOverlay = document.querySelector('.modal__overlay')
+        const close = document.querySelector('.close')
+        open.style.setProperty('--x', 90)
+        let isOpen = false;
+        open.addEventListener('click', () => {
+            if (!isOpen) {
+                modal.style.display = 'block';
+                modal.style.opacity = 0;
+
+                requestAnimationFrame(() => {
+                    modal.style.opacity = 1;
+                })
+                document.documentElement.style.overflow = 'hidden';
+                close.focus();
+                isOpen = true;
+            }
+
+        })
+        close.addEventListener('click', () => {
+            closeModal(2000)
+
+        })
+        modaOverlay.addEventListener('click', () => {
+            closeModal(2000)
+        })
+
+        function closeModal(timer = 2000) {
+            requestAnimationFrame(() => {
+                modal.style.opacity = 0;
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.documentElement.style.overflow = 'auto';
+                    isOpen = false;
+                }, timer);
+            });
+
+
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key == 'Escape' && isOpen) {
+                closeModal(2000)
+            }
+        })
+
+
+        const box = document.querySelector('.box');
+        const distance = 300;      // на сколько пикселей двигать
+        const duration = 1000;     // за сколько миллисекунд (1 секунда)
+
+        function animate(timestampStart) {
+            const start = timestampStart || performance.now();
+
+            function step(timestampNow) {
+                const elapsed = timestampNow - start;
+                const progress = Math.min(elapsed / duration, 1); // от 0 до 1
+
+                box.style.left = distance * progress + 'px';
+
+                if (progress < 1) {
+                    requestAnimationFrame(step); // продолжаем
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>

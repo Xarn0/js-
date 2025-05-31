@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style1.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+
+    </style>
+    <header>
+        <div class="container">
+            <button class="add-card open">add</button>
+
+        </div>
+    </header>
+    <div class="container">
+        <div class="gragon-zone">
+            <h2> На рассмотрении <span class="leng"></span></h2>
+            <div class="gragon-zone__container">
+                <div class="card">
+                    <div class="card__title">Задача: №942</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">20$</div>
+                </div>
+                <div class="card">
+                    <div class="card__title">Задача: №982</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">25$</div>
+                </div>
+                <div class="card">
+                    <div class="card__title">Задача: №912</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">10$</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gragon-zone process">
+            <h2>В процессе <span class="leng"></span></h2>
+            <div class="gragon-zone__container">
+                <div class="card">
+                    <div class="card__title">Задача: №782</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">21$</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gragon-zone succes">
+            <h2>Выполненые <span class="leng"></span></h2>
+            <div class="gragon-zone__container">
+                <div class="card">
+                    <div class="card__title">Задача: №972</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">27$</div>
+                </div>
+
+            </div>
+        </div>
+        <div class="gragon-zone warn">
+            <h2>Не выполненые <span class="leng"></span></h2>
+            <div class="gragon-zone__container">
+                <div class="card">
+                    <div class="card__title">Задача: №742</div>
+                    <p class="card__text">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur accusamus quas accusantium
+                        earum quo, laborum autem. Reprehenderit amet voluptatibus consequuntur.
+                    </p>
+                    <div class="card__price price">15$</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <button class="close" tabindex="0">close</button>
+            <h2 class="modal__title">Добавления<br> новой задачи</h2>
+            <form class="form-add-task">
+                <label class="tasknumber">
+                    <input min="0" type="number" name="taskNumber" placeholder="Номер задачи, например 210">
+                </label>
+                <div class="taskNumber-error"></div>
+                <textarea type="text" name="content" placeholder="Напишите задачу"></textarea>
+                <div class="content-error"></div>
+                <input type="number" min="5" name="price" placeholder="цена задачи">
+                <div class="price-error"></div>
+                <input disabled type="submit" value="добавить задачу">
+            </form>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>

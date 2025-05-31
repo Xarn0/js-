@@ -1,0 +1,22 @@
+.tabs {
+	display: flex;
+	gap: 20px;
+}
+.tab {
+	background-color: #77f;
+	padding: 20px;
+	color: #fff;
+	cursor: pointer;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+
+.panels {
+	border: 2px dashed #ccc;
+	margin-top: 30px;
+	padding: 30px;
+	width: 450px;
+}

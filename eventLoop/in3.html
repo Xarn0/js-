@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="start">Старт</button>
+    <button id="pause">Пауза</button>
+    <button id="reset">Сброс</button>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+
+
+
+    <style>
+        .progress-container {
+            width: 100%;
+            height: 25px;
+            background: #eee;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #4caf50, #81c784);
+            transition: width 0s;
+            /* отключаем анимацию CSS — управляем через JS */
+        }
+    </style>
+    <script>
+        const bar = document.getElementById('bar');
+        const btnStart = document.getElementById('start');
+        const btnPause = document.getElementById('pause');
+        const btnReset = document.getElementById('reset');
+
+        const DURATION = 3000; // 3 секунды
+        let startTime = null;
+        let pausedTime = 0;
+        let animationId = null;
+
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
+
+            const elapsed = timestamp - startTime + pausedTime;
+            const progress = Math.min(elapsed / DURATION, 1);
+
+            bar.style.width = `${progress * 100}%`;
+
+            if (progress < 1) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        btnStart.addEventListener('click', () => {
+            if (!animationId) {
+                requestAnimationFrame(animate);
+            }
+        });
+
+        btnPause.addEventListener('click', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+                pausedTime += performance.now() - startTime;
+                startTime = null;
+            }
+        });
+
+        btnReset.addEventListener('click', () => {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+            startTime = null;
+            pausedTime = 0;
+            bar.style.width = '0%';
+        });
+
+    </script>
+
+</body>
+
+</html>

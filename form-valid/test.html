@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<style>
+			.form {
+				width: 300px;
+				margin: 90px auto 0;
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+			}
+			.input {
+				height: 40px;
+				text-align: center;
+			}
+			.error {
+				color: red;
+			}
+			.success {
+				color: green;
+			}
+			.success-feedback {
+				width: 250px;
+				text-align: center;
+				height: 80px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: rgb(44, 102, 39);
+				position: absolute;
+				right: 10px;
+				background-color: #84e084;
+				padding: 20px;
+				transform: translateY(-100px);
+				transition: 1s transform ease-in-out, opacity 1s ease-in;
+				opacity: 0;
+				z-index: 4;
+			}
+			.success-feedback.active {
+				transform: translateY(0);
+				visibility: visible;
+				opacity: 1;
+				transition: 1s transform ease-in-out, opacity 1s ease-in;
+			}
+			#preview {
+				width: 700px;
+				object-fit: contain;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+		</style>
+		<div class="success-feedback">успешно отправлено</div>
+		<form action="" class="form">
+			<input type="text" name="name" placeholder="your name" class="input" />
+			<div class="name-error"></div>
+			<input type="email" name="email" placeholder="your email" class="input" />
+			<div class="email-error"></div>
+			<input
+				type="text"
+				name="message"
+				placeholder="your message"
+				class="input"
+			/>
+			<div class="message-error"></div>
+			<input type="file" multiple name="file" placeholder="" class="input" />
+
+			<div class="file-error"></div>
+			<input type="submit" value="submit" disabled />
+		</form>
+
+		<img id="preview" style="display: none; border-radius: 8px" />
+		<script>
+			const form = document.querySelector(".form");
+			const btnSubmit = form.querySelector("input[type=submit]");
+			const displayRequest = document.querySelector(".success-feedback");
+
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				btnSubmit.disabled = true;
+				let data = new FormData(form);
+				btnSubmit.value = "Отправляется....";
+				console.log(`name :${data.get("name")}`);
+				console.log(`email :${data.get("email")}`);
+				console.log(`message :${data.get("message")}`);
+				console.log(`avatar :${data.get("file")?.name}`);
+
+				setTimeout(() => {
+					displayRequest.classList.add("active");
+					form.reset();
+					btnSubmit.value = "Отправить";
+
+					let errors = document.querySelectorAll(".success");
+					errors.forEach((item) => {
+						item.textContent = "";
+						item.classList.remove("success");
+					});
+					setTimeout(() => {
+						displayRequest.classList.remove("active");
+						// window.history.go(-1);
+					}, 3000);
+				}, 3000);
+			});
+
+			form.addEventListener("input", () => {
+				let data = new FormData(form);
+				let hasError = false;
+				data.forEach((value, key) => {
+					let errorEl = form.querySelector(`.${key}-error`);
+
+					errorEl.textContent = "";
+					errorEl.classList.remove("error");
+					errorEl.classList.remove("success");
+
+					console.clear();
+					console.log(value);
+
+					if (!key) return;
+					if (key != "file") {
+						if (!value.trim()) {
+							hasError = true;
+							return;
+						}
+
+						if (key === "name") {
+							if (value.length < 3) {
+								errorEl.classList.add("error");
+								errorEl.textContent =
+									"Ваше имя не может быть короче 3х символов";
+								hasError = true;
+							} else {
+								errorEl.classList.add("success");
+								errorEl.classList.remove("error");
+								errorEl.textContent = "good";
+							}
+						}
+						if (key === "email") {
+							let testEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+							if (!testEmail.test(value)) {
+								errorEl.classList.add("error");
+								errorEl.textContent = "Ваша почта не корректная";
+								hasError = true;
+							} else {
+								errorEl.classList.add("success");
+								errorEl.classList.remove("error");
+								errorEl.textContent = "good";
+							}
+						}
+						if (key === "message") {
+							if (value.length <= 10) {
+								errorEl.classList.add("error");
+								errorEl.textContent = "Ваше сообщениянеможет быть меньше 10";
+								hasError = true;
+							} else {
+								errorEl.classList.add("success");
+								errorEl.classList.remove("error");
+								errorEl.textContent = "good";
+							}
+						}
+					}
+					if (value instanceof File) {
+						const allowedTypes = ["image/png", "image/jpeg"];
+						if (!allowedTypes.includes(value.type)) {
+							errorEl.classList.add("error");
+							errorEl.textContent = "Файл должен быть PNG или JPG";
+							hasError = true;
+						}
+						if (value.size > 5 * 1024 * 1024) {
+							errorEl.classList.add("error");
+							errorEl.textContent = "Файл должен быть меньше 5MB";
+							hasError = true;
+						}
+					}
+				});
+				btnSubmit.disabled = hasError;
+			});
+
+			const fileInput = form.querySelector("input[name='file']");
+			const previewImg = document.getElementById("preview");
+
+			fileInput.addEventListener("change", () => {
+				const file = fileInput.files[0];
+
+				if (file && file.type.startsWith("image/")) {
+					const reader = new FileReader();
+
+					reader.onload = function (e) {
+						previewImg.src = e.target.result;
+						previewImg.style.display = "block";
+					};
+
+					reader.readAsDataURL(file);
+				} else {
+					previewImg.style.display = "none";
+					previewImg.src = "";
+				}
+			});
+		</script>
+	</body>
+</html>

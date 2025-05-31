@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="panel1" id="tab1" tabindex="0">Вкладка
+            1</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel2" id="tab2" tabindex="-1">Вкладка
+            2</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="panel3" id="tab3" tabindex="-1">Вкладка
+            3</button>
+    </div>
+
+    <div class="tab-panels">
+        <div class="panel" role="tabpanel" id="panel1" aria-labelledby="tab1">Содержимое 1</div>
+        <div class="panel" role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>Содержимое 2</div>
+        <div class="panel" role="tabpanel" id="panel3" aria-labelledby="tab3" hidden>Содержимое 3</div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const panels = document.querySelectorAll('.panel');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => activateTab(index));
+
+            tab.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') activateTab((index + 1) % tabs.length);
+                if (e.key === 'ArrowLeft') activateTab((index - 1 + tabs.length) % tabs.length);
+            });
+        });
+
+        function activateTab(index) {
+            tabs.forEach((tab, i) => {
+                const isActive = i === index;
+                tab.setAttribute('aria-selected', isActive);
+                tab.setAttribute('tabindex', isActive ? '0' : '-1');
+            });
+
+            panels.forEach((panel, i) => {
+                panel.hidden = i !== index;
+            });
+            tabs[index].focus();
+        }
+
+    </script>
+</body>
+
+</html>

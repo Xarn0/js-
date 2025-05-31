@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="btn">Ckic</button>
+    <script>
+        const btn = document.querySelector('.btn');
+        btn.addEventListener('my-test', () => {
+            console.log('Test');
+
+
+        })
+
+        let eventCurst = new Event('my-test');
+        setTimeout(() => {
+            btn.dispatchEvent(eventCurst)
+        }, 3000)
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

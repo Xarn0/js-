@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>CustomEvent Chain</title>
+    <style>
+        body {
+            display: flex;
+            gap: 20px;
+            margin-top: 100px;
+            justify-content: center;
+        }
+
+        .block {
+            width: 100px;
+            height: 100px;
+            background: #ccc;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: 0.5s all ease-in-out;
+        }
+
+        .block.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="block1" class="block"></div>
+    <div id="block2" class="block"></div>
+    <div id="block3" class="block"></div>
+    <button class="btn">start</button>
+    <input type="text">
+    <script>
+        const block1 = document.getElementById("block1");
+        const block2 = document.getElementById("block2");
+        const block3 = document.getElementById("block3");
+        const btn = document.querySelector('.btn')
+
+
+        block3.addEventListener('my-my', (e) => {
+
+
+            console.log(`  Мне передали что: ${e.detail.end}`);
+            console.log(e.target);
+        })
+        block2.addEventListener('my-click', (e) => {
+            console.log(` процесс 2 серийный номер: ${e.detail.ser} `);
+            console.log(e.target);
+            block3.dispatchEvent(new CustomEvent('my-my', {
+                detail: {
+                    end: 'конец'
+                }
+            }))
+
+        })
+        block1.addEventListener('my-click', (e) => {
+            console.log(`  процесс 1  из ${e.detail.name}`);
+            console.log(e.target);
+            setTimeout(() => {
+                block2.dispatchEvent(new CustomEvent('my-click', {
+                    detail: {
+                        ser: '94993932'
+                    }
+                }))
+            }, 600)
+
+
+        })
+        btn.addEventListener('click', () => {
+            console.log("поехали");
+
+            setTimeout(() => {
+                block1.dispatchEvent(new CustomEvent('my-click', {
+                    detail: {
+                        name: 'form start'
+                    }
+                }))
+            }, 600)
+
+        })
+        // document.addEventListener("keydown", (e) => {
+        //     console.log("Key:", e.key);
+        // });
+
+        document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        const input = document.querySelector("input");
+        input.addEventListener("input", (e) => {
+            console.log("Ввод:", e.target.value);
+        });
+
+        input.value = "Программный ввод";
+        input.dispatchEvent(new InputEvent("input", { bubbles: true }));
+        document.addEventListener('keydown', (e) => {
+            if (e.key == "Escape") {
+                alert('закрытия')
+            };
+            if (e.ctrlKey && e.key === "Enter") {
+                console.log("Отправка формы через Ctrl+Enter");
+            }
+            if (e.ctrlKey && e.altKey) {
+                console.log('ctrl + alt');
+                console.log(e.location);
+
+
+            }
+            if (e.repeat == true && e.key == 'w') {
+                console.log("Отпксти клавишу");
+
+
+
+            }
+
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dropdown UI</title>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown__toggle {
+            padding: 10px 20px;
+            background: #2196f3;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown__menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            padding: 0;
+            list-style: none;
+            background: #fff;
+            border: 1px solid #ccc;
+            min-width: 160px;
+            display: none;
+            z-index: 10;
+        }
+
+        .dropdown__menu.show {
+            display: block;
+        }
+
+        .dropdown__item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown__item:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dropdown">
+        <button class="dropdown__toggle" aria-haspopup="listbox" aria-expanded="false">
+            Выбери опцию
+        </button>
+        <ul class="dropdown__menu" role="listbox">
+            <li class="dropdown__item" role="option">Опция 1</li>
+            <li class="dropdown__item" role="option">Опция 2</li>
+            <li class="dropdown__item" role="option">Опция 3</li>
+        </ul>
+    </div>
+
+    <script>
+        const dropdown = document.querySelector('.dropdown');
+        const toggle = dropdown.querySelector('.dropdown__toggle');
+        const menu = dropdown.querySelector('.dropdown__menu');
+
+        function openDropdown() {
+            menu.classList.add('show');
+            toggle.setAttribute('aria-expanded', 'true');
+            document.addEventListener('click', outsideClick);
+            document.addEventListener('keydown', escClose);
+        }
+
+        function closeDropdown() {
+            menu.classList.remove('show');
+            toggle.setAttribute('aria-expanded', 'false');
+            document.removeEventListener('click', outsideClick);
+            document.removeEventListener('keydown', escClose);
+        }
+
+        function outsideClick(e) {
+            if (!dropdown.contains(e.target)) {
+                closeDropdown();
+            }
+        }
+
+        function escClose(e) {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        }
+
+        toggle.addEventListener('click', () => {
+            menu.classList.contains('show') ? closeDropdown() : openDropdown();
+        });
+
+        // menu.addEventListener('click', (e) => {
+        //     if (e.target.classList.contains('dropdown__item')) {
+        //         toggle.textContent = e.target.textContent;
+        //         closeDropdown();
+        //     }
+        // });
+    </script>
+</body>
+
+</html>

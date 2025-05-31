@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid #040;
+        position: absolute;
+        border-radius: 50%;
+        background: #000;
+        z-index: 25;
+        user-select: none;
+    }
+
+    .drop-zone {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        overflow: auto;
+        background: #eee;
+        border: 2px dashed #888;
+        margin: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        vertical-align: top;
+        user-select: none;
+    }
+
+    .drop-zone.active {
+        background: #cfc;
+        /* подсветка при наведении */
+    }
+
+    .hove {
+        background-color: #949;
+    }
+
+    .wrap {
+        width: 300px;
+        border: 2px solid #949;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .accordion {
+        width: 100px;
+        max-height: 0;
+        overflow: hidden;
+        border: 2px dashed #777;
+        cursor: pointer;
+        padding: 30px;
+
+        transition: 2s max-height ease-in-out, 1s opacity ease-in;
+    }
+
+    .accordion.active {
+        max-height: 500px;
+    }
+
+    .accordion__content {
+        opacity: 0;
+        transition: 1s opacity ease-in;
+    }
+
+    .accordion__content.active {
+        opacity: 1;
+    }
+</style>
+<div class="box"></div>
+<div class="container">
+    <div class="drop-zone">Зона 1</div>
+    <div class="drop-zone">Зона 2</div>
+    <div class="drop-zone">Зона 3</div>
+    <div class="drop-zone">Зона 4</div>
+    <div class="drop-zone">Зона 5</div>
+</div>
+<div class="wrap">
+    <div class="accordion" tabindex="0">
+        <div class="accordion__content">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+        </div>
+    </div>
+    <div class="accordion" tabindex="1">
+        <div class="accordion__content">
+            Lorem, ipsum.
+        </div>
+    </div>
+</div>
+
+<body>
+    <script>
+        const wrap = document.querySelector('.wrap');
+
+        wrap.addEventListener('click', (e) => {
+            const item = e.target.closest('.accordion');
+            if (!item) return;
+            item.classList.toggle('active')
+            let itemEl = item.querySelector('.accordion__content')
+            itemEl.classList.toggle('active');
+            // item.addEventListener('blur', () => {
+            //     setTimeout(() => {
+            //         item.classList.remove('active');
+            //         itemEl.classList.remove('active');
+            //     }, 2000)
+            // })
+        })
+
+        wrap.addEventListener('focusout', (e) => {
+            const item = e.target.closest('.accordion');
+            if (!item) return;
+
+            setTimeout(() => {
+                item.classList.remove('active');
+                item.querySelector('.accordion__content')?.classList.remove('active');
+            }, 200);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const box = document.querySelector('.box');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const container = document.querySelector('.container')
+        let offsetX = 0;
+        let offsetY = 0;
+        let currentZone = null;
+        let hasDown = false;
+
+        box.addEventListener('mousedown', (e) => {
+            hasDown = true;
+            offsetX = e.clientX - box.offsetLeft;
+            offsetY = e.clientY - box.offsetTop;
+
+            box.style.cursor = 'grabbing'
+
+        })
+        document.addEventListener('mousemove', (e) => {
+
+            if (hasDown) {
+                console.clear()
+
+                box.style.display = 'none';
+                const hovered = document.elementFromPoint(e.clientX, e.clientY);
+                console.log(hovered)
+                box.style.display = '';
+
+
+                let x = e.clientX - offsetX;
+                let y = e.clientY - offsetY;
+
+                // x = Math.max(0, Math.min(x, window.innerWidth - box.offsetWidth));
+                // y = Math.max(0, Math.min(y, window.innerHeight - box.offsetHeight));
+
+                box.style.left = `${x}px`;
+                box.style.top = `${y}px`;
+
+
+                dropZones.forEach((zone, index) => {
+                    const boxRect = box.getBoundingClientRect();
+                    const zoneRect = zone.getBoundingClientRect();
+
+                    const isOverlapping =
+                        boxRect.right > zoneRect.left &&
+                        boxRect.left < zoneRect.right &&
+                        boxRect.bottom > zoneRect.top &&
+                        boxRect.top < zoneRect.bottom;
+
+                    zone.classList.toggle('active', isOverlapping);
+
+                    if (isOverlapping) currentZone = zone;
+
+
+                });
+            }
+        });
+        document.addEventListener('mouseup', () => {
+            if (hasDown) {
+                hasDown = false;
+                box.style.cursor = 'grab';
+
+                if (currentZone) {
+
+                    box.style.left = '';
+                    box.style.top = '';
+                    box.style.position = 'absolute';
+                    box.style.transform = 'translate(-50%, -50%)';
+
+                    currentZone.textContent = '';
+                    currentZone.appendChild(box);
+
+                    box.style.left = '50%';
+                    box.style.top = '50%';
+                }
+                dropZones.forEach((item, index) => {
+                    if (!item.children.length) {
+                        item.textContent = `  Зона ${index + 1}`
+                    }
+                })
+                dropZones.forEach(zone => zone.classList.remove('active'));
+            }
+        });
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="tit">Document Methods You Rarely Hear About</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        section {
+            margin-bottom: 20px;
+            border-left: 4px solid #007acc;
+            padding-left: 10px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Неочевидные методы <code>document</code> с пояснениями</h1>
+
+    <section>
+        <h2><code>document.execCommand()</code></h2>
+        <p>Выполняет команды редактирования (жирный текст, вставка и т. д.) — работает в <code>contenteditable</code>.
+        </p>
+        <pre>document.execCommand('bold');</pre>
+    </section>
+
+    <section>
+        <h2><code>document.hasFocus()</code></h2>
+        <p>Проверяет, активна ли текущая вкладка.</p>
+        <pre>if (!document.hasFocus()) console.log('Пользователь ушёл со страницы');</pre>
+    </section>
+
+    <section>
+        <h2><code>document.adoptNode()</code></h2>
+        <p>Перемещает DOM-элемент из другого документа (например, из iframe).</p>
+        <pre>const adopted = document.adoptNode(iframe.contentDocument.querySelector('div'));</pre>
+    </section>
+
+    <section>
+        <h2><code>document.createTreeWalker()</code></h2>
+        <p>Создаёт объект для пошагового обхода DOM по заданным правилам (например, только текст).</p>
+        <pre>
+const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+while (walker.nextNode()) {
+  console.log(walker.currentNode.textContent);
+}</pre>
+    </section>
+
+    <section>
+        <h2><code>document.importNode()</code></h2>
+        <p>Копирует узел из другого документа (в отличие от <code>adoptNode</code>, не перемещает, а клонирует).</p>
+        <pre>const clone = document.importNode(template.content, true);</pre>
+    </section>
+
+    <section>
+        <h2><code>document.elementsFromPoint()</code></h2>
+        <p>Возвращает все элементы под курсором в порядке наложения (сверху вниз).</p>
+        <pre>const all = document.elementsFromPoint(x, y);</pre>
+    </section>
+
+    <section>
+        <h2><code>document.documentURI</code></h2>
+        <p>Путь к документу в виде строки (как <code>location.href</code>, но только для чтения).</p>
+        <pre>console.log(document.documentURI);</pre>
+    </section>
+
+    <section>
+        <h2><code>document.visibilityState</code></h2>
+        <p>Показывает, активна ли вкладка (visible / hidden).</p>
+        <pre>
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') pause();
+});</pre>
+    </section>
+
+    <section>
+        <h2><code>document.timeline</code></h2>
+        <p>Интерфейс Web Animations API (работает в Chromium) — позволяет вручную управлять анимациями.</p>
+    </section>
+
+    <section>
+        <h2><code>document.scrollingElement</code></h2>
+        <p>Возвращает элемент, который прокручивается (<code>&lt;html&gt;</code> или <code>&lt;body&gt;</code>, в
+            зависимости от браузера).</p>
+        <pre>document.scrollingElement.scrollTop = 0;</pre>
+    </section>
+
+    <section>
+        <h2><code>document.designMode = 'on'</code></h2>
+        <p>Делает весь документ редактируемым (всё становится как <code>contenteditable</code>).</p>
+        <pre>document.designMode = 'on';</pre>
+    </section>
+
+    <section>
+        <h2><code>document.getSelection()</code></h2>
+        <p>Позволяет получить текущее выделение текста в документе.</p>
+        <pre>
+const selection = document.getSelection();
+console.log(selection.toString());</pre>
+    </section>
+
+    <section>
+        <h2><code>document.createRange()</code></h2>
+        <p>Позволяет создавать и управлять диапазонами текста (например, выделением или вставкой контента).</p>
+        <pre>
+const range = document.createRange();
+range.selectNodeContents(document.querySelector('p'));
+console.log(range.toString());</pre>
+    </section>
+
+    <section>
+        <h2><code>MutationObserver</code></h2>
+        <p>Отслеживает изменения в DOM-дереве (вставка, удаление, изменение атрибутов и т.д.).</p>
+        <pre>
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => console.log(mutation));
+});
+
+observer.observe(document.body, { childList: true, subtree: true });</pre>
+    </section>
+
+</body>
+<script>
+    // if (!document.hasFocus()) alert(' вы куда,');
+    console.log(document.getSelection());
+
+    document.addEventListener('visibilitychange', () => {
+        // if (document.visibilityState === 'hidden') pause();
+        let titile = document?.querySelector('#tit')
+        titile.textContent = 'Вы покинули';
+        // title?.style.FontSize = 40 + 'px'
+
+        // alert('Вы ушли')
+    });
+</script>
+
+</html>

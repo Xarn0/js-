@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Заголовок</h2>
+
+        <ul class="list">
+            <li>Пункт 1</li>
+            <li>Пункт 2</li>
+            <li>
+                <span>Пункт 3</span>
+            </li>
+        </ul>
+
+        <!-- Комментарий -->
+        <p>Абзац с <strong>жирным</strong> словом.</p>
+    </div>
+    <template id="card-template">
+        <div class="card">Шаблон</div>
+    </template>
+    <div class="cards"></div>
+
+    <button id="add">Добавить карточку</button>
+
+    <script>
+        const container = document.querySelector('.container');
+        let list = container.children[1];
+        let itemList = list.lastElementChild;
+        console.log(itemList.children[0].textContent);
+        let strong = list.nextElementSibling;
+        console.log(strong.children[0].textContent = 'очень жирным');
+
+
+
+        let addBtn = document.getElementById('add');
+        let cards = document.querySelector('.cards')
+        addBtn.addEventListener('click', (e) => {
+            addCard('Иван', e);
+        })
+        cards.addEventListener('click', (e) => {
+            let item = e.target.closest('.item')
+            if (!item) return;
+            if (e.target.matches('.btn-delete')) {
+                deleteCard(item)
+            }
+
+            if (e.target.matches('.btn-edit')) {
+                editCard(e, item)
+            }
+
+        })
+
+        function addCard(name, e) {
+            let card = document.createElement('div');
+            card.classList.add('item')
+            let p = document.createElement('p');
+            p.classList.add('card__text')
+            p.textContent = name
+            let btnDelete = document.createElement('button')
+            btnDelete.classList.add('btn-delete')
+            btnDelete.textContent = 'delete'
+            let btnEdit = document.createElement('button');
+            btnEdit.classList.add('btn-edit')
+            btnEdit.textContent = 'edit';
+
+            card.append(p, btnDelete, btnEdit);
+            cards.insertAdjacentElement('beforeend', card)
+        }
+        function deleteCard(el) {
+            el.remove()
+        }
+        function editCard(e, el) {
+            let status = e.target.textContent == 'edit';
+
+
+            if (status) {
+                let input = document.createElement('input');
+                input.classList.add('card__input');
+                let currentText = el.querySelector('.card__text');
+                input.value = currentText.textContent;
+                currentText.replaceWith(input);
+                e.target.textContent = 'save'
+
+            } else {
+                let paragfh = document.createElement('p');
+                paragfh.classList.add('card__text');
+                let currentInput = el.querySelector('.card__input');
+                paragfh.textContent = currentInput.value;
+                currentInput.replaceWith(paragfh);
+                e.target.textContent = 'edit'
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

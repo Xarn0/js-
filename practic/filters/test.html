@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .product {
+            width: 300px;
+            border: 2px dashed #777;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        #search {
+            width: 300px;
+            height: 90px;
+            outline: none;
+            padding: 30px;
+            border: 2px solid #77f;
+            border-radius: 20px;
+            font-size: 20px;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            -ms-border-radius: 20px;
+            -o-border-radius: 20px;
+        }
+    </style>
+    <input type="search" id="search" placeholder="search is name" role="search">
+    <div class="products"></div>
+    <script>
+        const searchInput = document.querySelector("#search");
+        const displayResult = document.querySelector(".products");
+
+        const products = [
+            { id: 101, name: "Смартфон Galaxy X", price: 29990, inStock: true },
+            { id: 102, name: "Ноутбук VisionBook", price: 74990, inStock: false },
+            { id: 103, name: "Наушники SonicPro", price: 4990, inStock: true },
+            { id: 104, name: "Клавиатура KeyMaster", price: 2990, inStock: true }
+        ];
+
+        searchInput.addEventListener(
+            "input",
+            debounce(function () {
+                const value = this.value;
+                const result = resultValue(value);
+                renderProductList(result, value);
+            }, 300)
+        );
+
+        function resultValue(value) {
+            const query = value.trim().toLowerCase();
+            return products.filter((item) => {
+                const nameMatch = item.name.toLowerCase().includes(query);
+                const priceMatch = String(item.price).includes(query);
+                return nameMatch || priceMatch;
+            });
+        }
+
+        function renderProductList(data, query = "") {
+            displayResult.innerHTML = "";
+
+            if (!data.length) {
+                const empty = document.createElement("p");
+                empty.textContent = "Ничего не найдено";
+                displayResult.append(empty);
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+
+            data.forEach((item) => {
+                const container = document.createElement("div");
+                container.classList.add("product");
+
+                const name = document.createElement("p");
+                const price = document.createElement("p");
+                const stock = document.createElement("p");
+
+                name.innerHTML = highlight(item.name, query);
+                price.innerHTML = highlight(String(item.price), query);
+
+                if (!item.inStock) {
+                    stock.textContent = "Нет в наличии";
+                    container.classList.add("out-of-stock");
+                    container.append(name, price, stock);
+                } else {
+                    container.append(name, price);
+                }
+                fragment.append(container);
+            });
+
+            displayResult.append(fragment);
+        }
+
+        function highlight(text, query) {
+            if (!query.trim()) return text;
+            const regex = new RegExp(`(${query})`, "gi");
+            return text.replace(regex, `<mark>$1</mark>`);
+        }
+
+        function debounce(fn, delay = 300) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn.apply(this, args), delay);
+            };
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sortable Drag & Drop</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+        }
+
+        .drop-zone {
+            width: 300px;
+            margin: auto;
+            padding: 10px;
+            border: 2px dashed #888;
+            background: #f9f9f9;
+        }
+
+        .card {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #e0f7fa;
+            border: 1px solid #00acc1;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="drop-zone">
+        <div class="card">Карточка A</div>
+        <div class="card">Карточка B</div>
+        <div class="card">Карточка C</div>
+        <div class="card">Карточка D</div>
+    </div>
+
+    <script>
+        const dropZone = document.querySelector('.drop-zone');
+        let dragged = null;
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('pointerdown', (e) => {
+                dragged = card;
+                card.classList.add('dragging');
+                console.log(e.pressure);
+            });
+        });
+
+        document.addEventListener('pointermove', (e) => {
+            if (!dragged) return;
+
+            const hovered = document.elementFromPoint(e.clientX, e.clientY);
+            console.clear()
+            console.log(hovered);
+
+            if (!hovered) return;
+
+            const targetCard = hovered.closest('.card');
+
+            if (targetCard && targetCard !== dragged && dropZone.contains(targetCard)) {
+                const rect = targetCard.getBoundingClientRect();
+                const isAbove = e.clientY < rect.top + rect.height / 2;
+
+                if (isAbove) {
+                    dropZone.insertBefore(dragged, targetCard);
+                } else {
+                    dropZone.insertBefore(dragged, targetCard.nextSibling);
+                }
+            }
+        });
+
+        document.addEventListener('pointerup', () => {
+            if (dragged) {
+                dragged.classList.remove('dragging');
+                dragged = null;
+            }
+        });
+    </script>
+</body>
+
+</html>

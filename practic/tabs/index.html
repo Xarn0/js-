@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+<div class="tabs" role="tablist">
+    <div class="tab" id="tab1" role="tab" aria-controls="panel1" aria-selected="true" tabindex="0"> вкладка1</div>
+    <div class="tab" id="tab2" role="tab" aria-controls="panel2" aria-selected="false" tabindex="1"> вкладка2</div>
+    <div class="tab" id="tab3" role="tab" aria-controls="panel3" aria-selected="false" tabindex="2"> вкладка3</div>
+</div>
+<div class="panels" role="">
+    <div class="panel" id="panel1" role="tabpanel" aria-describedby="tab1">содуржимое 1</div>
+    <div class="panel" id="panel2" role="tabpanel" aria-describedby="tab2" hidden>содуржимое 2</div>
+    <div class="panel" id="panel3" role="tabpanel" aria-describedby="tab3" hidden>содуржимое 3</div>
+</div>
+
+<body>
+    <script src="./script.js"></script>
+</body>
+
+</html>
