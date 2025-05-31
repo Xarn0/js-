@@ -1,0 +1,27 @@
+.title {
+	font-size: 20px;
+	text-align: center;
+	color: rgb(30, 30, 200);
+	margin-bottom: 30px;
+}
+.INStok {
+	width: 300px;
+	background-color: rgba(204, 204, 153, 0.129);
+	padding: 40px;
+}
+.card {
+	background: #940;
+	color: #fff;
+	padding: 10px;
+	margin: 10px;
+}
+.full-list-product {
+	width: 300px;
+	width: 300px;
+	background-color: rgba(49, 201, 117, 0.129);
+	padding: 40px;
+}
+.container {
+	display: flex;
+	gap: 20px;
+}
