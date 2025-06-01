@@ -29,6 +29,7 @@ const formConfig = [
 function createFormFromConfiga(config) {
 	if (!Array.isArray(config)) return;
 	let formElements = document.createElement("form");
+	formElements.setAttribute("novalidate", "true");
 	formElements.className = "group-form";
 	config.forEach((item, index) => {
 		let element = createDomInput(
